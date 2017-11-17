@@ -1,0 +1,38 @@
+html
+	head
+		title #{title}
+		script(src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous")
+	body
+		h1 Welcome Bro
+		
+		include searchbar
+  		
+		p Suggested user: #{firstname}  #{lastname}  #{email}
+		//- ul
+		//- 	li
+		//- 		a(href="signup") Sign Up!
+		//- 		each item in obj
+		//- 			each value, key in item
+		//- 				p #{key}: #{value}
+
+	//- script.
+
+	//- 		$(document).ready(function() {
+	//- 			$("#autocomplete").keyup(function(e) {
+	//- 				console.log("e.taget", e.target.value)
+	//- 				$.ajax( {
+	//- 					url: "http://localhost:3000/suggestion",
+	//- 					datatype: "json",
+	//- 					method: "POST",
+	//- 					suggestion: e.target.value,
+	//- 					success: function(result) {
+	//- 						console.log("Did you mean", result)
+	//- 						//- self.isEditModel(!self.isEditModel());
+	//- 						//- alert(result.message)
+	//- 						//- console.log("the res", result.message)
+	//- 					}
+	//- 				})
+	//- 			})
+	//- 		})

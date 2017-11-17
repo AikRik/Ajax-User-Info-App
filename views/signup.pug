@@ -1,0 +1,13 @@
+body
+		form(method="POST", action="/signup")
+			label.Firstname
+				input(type=text, name="firstname", value="newName") 
+			label.Lastname
+				input(type =text, name="lastname", value="Lastname")
+			label.Email
+				input(type =text, name="email", value="Email")
+			input(type= "submit", value="Submit")
+
+		each item in add
+			each value, key in item
+				p #{key}: #{value}

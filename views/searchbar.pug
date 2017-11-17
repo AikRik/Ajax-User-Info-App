@@ -1,0 +1,39 @@
+html
+	head
+		title #{title}
+		script(src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous")
+	body
+		form(method="POST", action="/user")
+			input(type=text, name="firstname", value="Firstname")
+			input(type =text, name="lastname", value="Lastname")
+			input(type =text, name="email", value="Email")
+			input(type= "submit", value="Submit")
+		
+		input(id="autocomplete", type=text, name="suggestion", value="Suggestion")
+		button(type= "submit", value="Search") Search
+		p(id="firstname") 
+
+	script.
+			$(document).ready(function() {
+				$("#autocomplete").keyup(function(e) {
+					console.log("e.taget", e.target.value)
+					var suggestion = {input: e.target.value}
+					$.ajax( {
+						url: "/suggestion",
+						datatype: "json",
+						type: "POST",
+						data: suggestion,						
+						success: function(result) {
+							$("#firstname").html(result.firstname)
+							console.log("Result", result)
+						},
+						error: function(err) {
+							console.log(err)
+						} 
+					})
+				})
+			})
+
+	
