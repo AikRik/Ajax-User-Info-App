@@ -1,9 +1,14 @@
 body
-	h1 Hello, 
+	include navbar
+	h1 Hello :) 
 	p Here are your search results:
 	p Firstname: #{user}
 	p Lastname: #{lastname}
 	p Email: #{email}
+	
 
-
-
+	h1 Database
+	p
+		each item in obj
+			each value, key in item
+				p #{key}: #{value}

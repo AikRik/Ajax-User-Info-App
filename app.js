@@ -3,7 +3,7 @@ const app = express()
 const fs = require("fs")
 const bodyParser = require("body-parser")
 app.use(bodyParser.urlencoded({ extended: true }))
-app.listen(3000, () => { console.log("Listening at 3000") })
+app.listen(3005, () => { console.log("Listening at 3005") })
 app.set("view engine", "pug")
 
 
@@ -28,14 +28,20 @@ app.post("/user", function(req, res, next) {
         var obj = JSON.parse(data);
         console.log(obj)
 
-        console.log(req.body.firstname)
-        console.log(req.body.lastname)
-        console.log(req.body.email)
+        console.log(req.body.search)
 
         var isFound = false
         for (var i = 0; i < obj.length; i++) {
-            if (req.body.firstname === obj[i].firstname || req.body.lastname === obj[i].lastname || req.body.email === obj[i].email) {
-                res.render("user", {
+            if (
+                req.body.search === obj[i].firstname, obj[i].lastname, obj[i].email ||
+                req.body.search === obj[i].firstname, obj[i].lastname ||
+                req.body.search === obj[i].firstname, obj[i].email ||
+                req.body.search === obj[i].email, obj[i].lastname  ||
+                req.body.search === obj[i].firstname|| 
+                req.body.search === obj[i].lastname || 
+                req.body.search === obj[i].email) {
+                
+                res.render("user", {obj : obj,
                     user: obj[i].firstname,
                     lastname: obj[i].lastname,
                     email: obj[i].email
@@ -76,6 +82,7 @@ app.post("/signup", (req, res, next) => {
 
         add.push(newUser)
         let newJSON = JSON.stringify(add)
+        
         fs.writeFile("users.json", newJSON, function(err, data) {
             if (err) {
                 console.log("Error")
@@ -86,52 +93,26 @@ app.post("/signup", (req, res, next) => {
 })
 
 app.post("/suggestion", (req, res) => {
-	fs.readFile('users.json', 'utf8', function(err, data) {
+    fs.readFile('users.json', 'utf8', function(err, data) {
         var userSuggest = JSON.parse(data);
-	    let suggest = req.body.input;
-	    // var suggestName = 
-	    
-	    console.log("The suggest is", suggest)
+        let suggest = req.body.input;
+        var userResult = []
 
-	    if (err) {
+        if (err) {
             console.log("ERROR")
         }
-        let isFound = false	
-	    for (var i = 0; i < userSuggest.length; i++) {
-            if (userSuggest[i].firstname.toLowerCase().startsWith(suggest) || userSuggest[i].lastname.toLowerCase().startsWith(suggest)  || userSuggest[i].email.toLowerCase().startsWith(suggest) ) {
-		    	console.log("Do you mean: ", userSuggest[i].email, userSuggest[i].firstname, userSuggest[i].lastname)
-		    	res.json({firstname: userSuggest[i].firstname, lastname: userSuggest[i].lastname, email: userSuggest[i].email})
-		    	isFound = true
-		    	break;
-	    	}
-		}
-		if(!isFound) {
-			res.end()
-		}
-	})
+
+        for (var i = 0; i < userSuggest.length; i++) {
+            if (userSuggest[i].firstname.toLowerCase().match(suggest) || userSuggest[i].lastname.toLowerCase().match(suggest) || userSuggest[i].email.toLowerCase().match(suggest)) {
+                console.log("Do you mean: ", userSuggest[i].email, userSuggest[i].firstname, userSuggest[i].lastname)
+                userResult.push(userSuggest[i].firstname + " " + userSuggest[i].lastname + " ")
+
+        }
+        if (userResult.length !== 0) {
+            console.log("Hey")
+            res.json({ input: userResult })
+
+        }
+
+    }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

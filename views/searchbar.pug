@@ -6,19 +6,19 @@ html
 			  crossorigin="anonymous")
 	body
 		form(method="POST", action="/user")
-			input(type=text, name="firstname", value="Firstname")
-			input(type =text, name="lastname", value="Lastname")
-			input(type =text, name="email", value="Email")
+			input(type=text, name="search", placeholder="Find User")
+			//- input(type =text, name="lastname", placeholder="Lastname")
+			//- input(type =text, name="email", placeholder="Email")
 			input(type= "submit", value="Submit")
 		
-		input(id="autocomplete", type=text, name="suggestion", value="Suggestion")
+		input(list="suggestions" id="autocomplete", type=text, name="suggestion", placeholder="Suggestion")
 		button(type= "submit", value="Search") Search
-		p(id="firstname") 
+		p(id="firstname") hello
 
 	script.
 			$(document).ready(function() {
 				$("#autocomplete").keyup(function(e) {
-					console.log("e.taget", e.target.value)
+					console.log("e.target", e.target.value)
 					var suggestion = {input: e.target.value}
 					$.ajax( {
 						url: "/suggestion",
@@ -26,8 +26,8 @@ html
 						type: "POST",
 						data: suggestion,						
 						success: function(result) {
-							$("#firstname").html(result.firstname)
-							console.log("Result", result)
+							$("p").html("Who do you mean: " + result.input)
+							console.log("Who do you mean: ", result.input)
 						},
 						error: function(err) {
 							console.log(err)
